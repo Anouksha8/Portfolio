@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anouksha Sreemurthy — Java Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #f9f7f4;
+    --surface:   #f2efe9;
+    --surface2:  #eae6de;
+    --border:    #dcd8cf;
+    --border2:   #c8c2b6;
+    --ink:       #1c1a17;
+    --ink2:      #3d3a34;
+    --muted:     #8c8880;
+    --accent:    #1c3d5a;   /* deep navy */
+    --accent2:   #2e6da4;   /* medium blue */
+    --accent3:   #b07d4a;   /* warm bronze */
+    --accent-lt: #e8eef4;   /* navy tint */
+    --ff-display: 'Cormorant Garamond', Georgia, serif;
+    --ff-body:    'Outfit', sans-serif;
+    --ff-mono:    'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--ff-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* subtle paper texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 5rem;
+    background: rgba(249,247,244,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--ff-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo em { font-style: italic; color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--ff-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 9rem 5rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* diagonal navy block */
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 42%;
+    height: 100%;
+    background: var(--accent);
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* thin rule lines */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px);
+    background-size: 100% 80px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .hero-inner { position: relative; z-index: 1; max-width: 780px; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--ff-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--accent2);
+  }
+
+  .hero-name {
+    font-family: var(--ff-display);
+    font-size: clamp(3.8rem, 7.5vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .hero-name strong {
+    display: block;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .hero-role {
+    font-family: var(--ff-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-role span {
+    color: var(--accent3);
+    border-bottom: 1px solid var(--accent3);
+    padding-bottom: 1px;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--ink2);
+    max-width: 520px;
+    margin-bottom: 3rem;
+    line-height: 1.75;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #f9f7f4;
+    padding: 0.9rem 2.2rem;
+    text-decoration: none;
+    font-family: var(--ff-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.2s;
+    border: none;
+  }
+  .btn-primary:hover { background: #16324a; transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    padding: 0.9rem 2.2rem;
+    border: 1px solid var(--border2);
+    text-decoration: none;
+    font-family: var(--ff-body);
+    font-weight: 500;
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* ── DIVIDER ── */
+  .full-divider {
+    width: 100%; height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SECTION SHELL ── */
+  .section-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 5.5rem 5rem;
+  }
+
+  .section-header { margin-bottom: 3.5rem; }
+
+  .section-eyebrow {
+    font-family: var(--ff-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: var(--ff-display);
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 1.5px; }
+
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.25rem 2.5rem;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .exp-card:hover { border-color: var(--border2); box-shadow: 0 4px 24px rgba(28,61,90,0.06); }
+  .exp-card:hover::before { opacity: 1; }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .exp-role {
+    font-family: var(--ff-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .exp-company {
+    font-family: var(--ff-mono);
+    font-size: 0.78rem;
+    color: var(--accent2);
+    margin-top: 0.25rem;
+    letter-spacing: 0.04em;
+  }
+
+  .exp-date {
+    font-family: var(--ff-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.9rem;
+    white-space: nowrap;
+    letter-spacing: 0.06em;
+    align-self: flex-start;
+  }
+
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .exp-bullets li {
+    font-size: 0.9rem;
+    color: var(--ink2);
+    padding-left: 1.4rem;
+    position: relative;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  .exp-bullets li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--accent3);
+    font-size: 0.8rem;
+  }
+  .exp-bullets strong { font-weight: 600; color: var(--accent); }
+
+  /* ── SKILLS ── */
+  .skills-section-bg { background: var(--surface); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+  }
+
+  .skill-card {
+    background: var(--bg);
+    padding: 1.75rem 2rem;
+    transition: background 0.2s;
+  }
+  .skill-card:hover { background: var(--accent-lt); }
+
+  .skill-cat {
+    font-family: var(--ff-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+  .tag {
+    font-family: var(--ff-mono);
+    font-size: 0.73rem;
+    padding: 0.28rem 0.7rem;
+    background: var(--surface2);
+    color: var(--ink2);
+    border: 1px solid var(--border);
+    letter-spacing: 0.03em;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { background: var(--accent); color: #f9f7f4; border-color: var(--accent); }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(28,61,90,0.1);
+  }
+
+  /* sweeping top border on hover */
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .project-card:hover::after { transform: scaleX(1); }
+
+  .project-num {
+    font-family: var(--ff-display);
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .project-card:hover .project-num { color: var(--accent-lt); }
+
+  .project-title {
+    font-family: var(--ff-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.2rem;
+    color: var(--ink);
+  }
+
+  .project-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .project-highlights li {
+    font-size: 0.88rem;
+    color: var(--ink2);
+    font-weight: 300;
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .project-highlights li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent3);
+    font-size: 0.72rem;
+    top: 3px;
+  }
+  .project-highlights strong { font-weight: 600; color: var(--ink); }
+
+  /* ── EDUCATION ── */
+  .edu-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .edu-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    transition: border-color 0.3s;
+  }
+  .edu-card:hover { border-color: var(--border2); }
+
+  .edu-icon {
+    width: 48px; height: 48px;
+    border: 1px solid var(--border2);
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+
+  .edu-degree {
+    font-family: var(--ff-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+  }
+  .edu-school {
+    font-family: var(--ff-mono);
+    font-size: 0.78rem;
+    color: var(--accent2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CONTACT ── */
+  .contact-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 5.5rem 5rem;
+  }
+
+  .contact-inner {
+    background: var(--accent);
+    padding: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* decorative corner lines */
+  .contact-inner::before {
+    content: '';
+    position: absolute;
+    top: 32px; right: 32px; bottom: 32px; left: 32px;
+    border: 1px solid rgba(249,247,244,0.12);
+    pointer-events: none;
+  }
+
+  .contact-inner::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+
+  .contact-title {
+    font-family: var(--ff-display);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: #f9f7f4;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .contact-title strong { font-weight: 600; display: block; }
+
+  .contact-sub {
+    font-size: 1rem;
+    color: rgba(249,247,244,0.65);
+    font-weight: 300;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .contact-links {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    position: relative;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid rgba(249,247,244,0.25);
+    text-decoration: none;
+    font-family: var(--ff-mono);
+    font-size: 0.78rem;
+    color: #f9f7f4;
+    letter-spacing: 0.06em;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    background: rgba(249,247,244,0.06);
+  }
+  .contact-link:hover {
+    background: rgba(249,247,244,0.14);
+    border-color: rgba(249,247,244,0.5);
+    transform: translateY(-2px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem 5rem;
+    font-family: var(--ff-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero, .section-wrap, .contact-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+    #hero { padding-top: 7rem; }
+    .contact-inner { padding: 3rem 2rem; }
+    .edu-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .contact-inner::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Anouksha<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Available for opportunities</p>
+    <h1 class="hero-name">
+      Anouksha
+      <strong>Sreemurthy</strong>
+    </h1>
+    <p class="hero-role">Java Full Stack Developer &nbsp;·&nbsp; <span>ServiceNow</span></p>
+    <p class="hero-desc">
+      Building enterprise-grade applications with Java, Spring Boot &amp; React. 
+      Passionate about microservices, performance optimization, and clean, scalable architecture.
+    </p>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn-primary">View My Work</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- EXPERIENCE -->
+<div class="section-wrap" id="experience">
+  <div class="section-header">
+    <p class="section-eyebrow reveal">Work History</p>
+    <h2 class="section-title reveal">Professional <em>Experience</em></h2>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Java Full Stack Developer</div>
+          <div class="exp-company">ServiceNow · California, USA</div>
+        </div>
+        <div class="exp-date">June 2024 – Present</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Engineered robust RESTful APIs using Java, Spring Boot, Hibernate &amp; JPA, improving system reliability and response times across high-traffic endpoints.</li>
+        <li>Developed interactive web applications with React, JavaScript, HTML5 &amp; CSS3 that significantly boosted customer portal engagement and adoption.</li>
+        <li>Implemented microservice architecture with Docker, Kubernetes &amp; AWS for enterprise-grade auto-scaling and fault tolerance.</li>
+        <li>Integrated third-party platforms via APIs, streamlining incident management &amp; HR onboarding workflows and reducing manual overhead.</li>
+        <li>Built real-time analytics dashboards with GraphQL, WebSockets &amp; Chart.js, enabling data-driven decisions for leadership teams.</li>
+        <li>Orchestrated Agile delivery and CI/CD pipelines with Jenkins, Maven &amp; GitHub Actions, accelerating feature release cadence.</li>
+      </ul>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Java Full Stack Developer</div>
+          <div class="exp-company">Neon IT Systems · India</div>
+        </div>
+        <div class="exp-date">Aug 2020 – Jul 2022</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Delivered scalable enterprise applications using Java, Spring Boot &amp; ReactJS, improving project turnaround times and client satisfaction.</li>
+        <li>Architected RESTful APIs with Spring Security, enabling robust role-based access control across multi-tenant systems.</li>
+        <li>Optimized PostgreSQL queries &amp; integrated Redis caching, significantly decreasing average API response latency.</li>
+        <li>Ensured cross-browser compatibility and optimized frontend performance, improving page load times and user experience.</li>
+        <li>Mentored junior developers in React &amp; Java best practices, improving onboarding efficiency across the team.</li>
+        <li>Implemented secure authentication using JWT &amp; OAuth2 and automated deployments with Docker, Jenkins &amp; AWS.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- SKILLS -->
+<div class="skills-section-bg">
+  <div class="section-wrap" id="skills">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">Tech Stack</p>
+      <h2 class="section-title reveal">Skills &amp; <em>Technologies</em></h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">Backend</div>
+        <div class="skill-tags">
+          <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Spring MVC</span>
+          <span class="tag">Hibernate</span><span class="tag">JPA</span><span class="tag">RESTful APIs</span>
+          <span class="tag">Microservices</span><span class="tag">Apache Kafka</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">Frontend</div>
+        <div class="skill-tags">
+          <span class="tag">ReactJS</span><span class="tag">Angular</span><span class="tag">JavaScript ES6+</span>
+          <span class="tag">TypeScript</span><span class="tag">HTML5</span><span class="tag">CSS3</span>
+          <span class="tag">Bootstrap</span><span class="tag">Material-UI</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">Databases</div>
+        <div class="skill-tags">
+          <span class="tag">MySQL</span><span class="tag">PostgreSQL</span><span class="tag">Oracle</span>
+          <span class="tag">MongoDB</span><span class="tag">Redis</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">DevOps &amp; Cloud</div>
+        <div class="skill-tags">
+          <span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">AWS EC2/S3/RDS</span>
+          <span class="tag">Jenkins</span><span class="tag">GitHub Actions</span><span class="tag">Maven</span>
+          <span class="tag">Gradle</span><span class="tag">Azure</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">Security</div>
+        <div class="skill-tags">
+          <span class="tag">Spring Security</span><span class="tag">JWT</span><span class="tag">OAuth2</span>
+          <span class="tag">RBAC</span><span class="tag">SSL/TLS</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">Testing &amp; Tooling</div>
+        <div class="skill-tags">
+          <span class="tag">JUnit</span><span class="tag">Mockito</span><span class="tag">Selenium</span>
+          <span class="tag">Postman</span><span class="tag">SonarQube</span><span class="tag">ELK Stack</span>
+          <span class="tag">Swagger/OpenAPI</span><span class="tag">Agile/Scrum</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- PROJECTS -->
+<div class="section-wrap" id="projects">
+  <div class="section-header">
+    <p class="section-eyebrow reveal">Selected Work</p>
+    <h2 class="section-title reveal">Featured <em>Projects</em></h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-title">Online Banking Application</div>
+      <ul class="project-highlights">
+        <li>Fully responsive digital banking solution with React.js, delivering a seamless experience across multiple device types with <strong>high uptime reliability</strong>.</li>
+        <li>Secure APIs dynamically fetching financial data for a large customer base, with optimized retrieval architecture.</li>
+        <li>Component library of <strong>50+ reusable UI elements</strong>, accelerating development velocity for the engineering team.</li>
+      </ul>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-title">Financial Reporting Dashboard</div>
+      <ul class="project-highlights">
+        <li>Real-time economic data visualization platform with Angular &amp; Material UI, serving financial analysts at high accuracy thresholds.</li>
+        <li>Backend services processing <strong>thousands of concurrent transactions</strong> daily with MySQL under production load.</li>
+        <li>Token-authenticated REST APIs securing sensitive financial data, reducing security exposure significantly.</li>
+        <li>Lazy loading &amp; component splitting improving load performance for a growing monthly user base.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- EDUCATION -->
+<div class="section-wrap" id="education">
+  <div class="section-header">
+    <p class="section-eyebrow reveal">Academic Background</p>
+    <h2 class="section-title reveal"><em>Education</em></h2>
+  </div>
+  <div class="edu-list">
+
+    <div class="edu-card reveal">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <div class="edu-degree">Master of Science in Information Systems</div>
+        <div class="edu-school">Northeastern University · Boston, MA</div>
+      </div>
+    </div>
+
+    <div class="edu-card reveal">
+      <div class="edu-icon">🏛️</div>
+      <div>
+        <div class="edu-degree">Bachelor of Engineering in Computer Science &amp; Engineering</div>
+        <div class="edu-school">BNM Institute of Technology · Bangalore, India</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- CONTACT -->
+<div class="contact-wrap" id="contact">
+  <div class="contact-inner reveal">
+    <h2 class="contact-title">
+      Let's Build
+      <strong>Something Great</strong>
+    </h2>
+    <p class="contact-sub">Open to full-time roles and exciting engineering challenges.</p>
+    <div class="contact-links">
+      <a href="mailto:anouksha@email.com" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+      <a href="tel:+12675934440" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.4 13.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012.31 3h3a2 2 0 012 1.72c.13 1.05.37 2.09.72 3.09a2 2 0 01-.45 2.11L6.09 11a16 16 0 006.29 6.29l1.05-1.49a2 2 0 012.11-.45c1 .35 2.04.59 3.09.72A2 2 0 0122 18z"/></svg>
+        267-593-4440
+      </a>
+      <a href="https://github.com" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Anouksha Kolige Sreemurthy &nbsp;·&nbsp; Java Full Stack Developer
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
